@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/imageViewContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pattern">
+
+    <com.asif.imagemagnifier.TouchImageView
+        android:id="@+id/touchimageview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.asif.imagemagnifier.BrushView
+        android:id="@+id/brushview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>
