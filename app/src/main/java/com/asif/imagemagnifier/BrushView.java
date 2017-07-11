@@ -31,12 +31,12 @@ public class BrushView extends android.support.v7.widget.AppCompatImageView {
         this.metrics = getResources().getDisplayMetrics();
         this.density = (int) this.metrics.density;
         this.alpga = 200;
-        this.target_offset = 200;//(float) (this.density * 66);
+        this.target_offset = (float) (this.density * 66);
         this.offset = (float) (this.density * 100);
         this.centerx = (float) (this.density * 166);
         this.centery = (float) (this.density * 200);
         this.smallRadius = (float) (this.density * 3);
-        this.largeRadius = 100;//(float) (this.density * 33);
+        this.largeRadius = (float) (this.density * 33);
         this.isTouch = false;
 
     }
@@ -46,12 +46,12 @@ public class BrushView extends android.support.v7.widget.AppCompatImageView {
         this.metrics = getResources().getDisplayMetrics();
         this.density = (int) this.metrics.density;
         this.alpga = 200;
-        this.target_offset = 200;//(float) (this.density * 66);
+        this.target_offset = (float) (this.density * 66);
         this.offset = (float) (this.density * 100);
         this.centerx = (float) (this.density * 166);
         this.centery = (float) (this.density * 200);
         this.smallRadius = (float) (this.density * 3);
-        this.largeRadius = 100;//(float) (this.density * 33);
+        this.largeRadius = (float) (this.density * 33);
         this.isTouch = false;
     }
 
@@ -103,28 +103,26 @@ public class BrushView extends android.support.v7.widget.AppCompatImageView {
             Rect src = new Rect(projectedX - 100, projectedY - 100, projectedX + 100, projectedY + 100);
             Rect dst = new Rect((int) centerx - 100, (int) centery - 400, (int) centerx + 100, (int) centery - 200);
             canvas.drawARGB(0, 0, 0, 0);
-            canvas.drawBitmap(getCroppedBitmap(((MainActivity) getContext()).scaledBitmap, src, dst, zoomScale), centerx - 100, centery - 400, p);
+            canvas.drawBitmap(getCroppedBitmap(((MainActivity) getContext()).scaledBitmap, src, dst, zoomScale), centerx - this.largeRadius, centery - this.largeRadius*4, p);
             System.gc();
 
             canvas.drawCircle(this.centerx, this.centery - this.target_offset - 100, this.largeRadius, p);
 
 //            canvas.drawLine(this.centerx - this.largeRadius, this.centery - this.target_offset - 100, this.centerx + this.largeRadius, this.centery - this.target_offset - 100, p);
-            canvas.drawLine(this.centerx - this.largeRadius, this.centery - this.target_offset - 100, this.centerx - 10, this.centery - this.target_offset - 100, p);
-            canvas.drawLine(this.centerx + 10, this.centery - this.target_offset - 100, this.centerx + this.largeRadius, this.centery - this.target_offset - 100, p);
+            canvas.drawLine(this.centerx - this.largeRadius, this.centery - this.target_offset - this.largeRadius, this.centerx - 10, this.centery - this.target_offset - this.largeRadius, p);
+            canvas.drawLine(this.centerx + 10, this.centery - this.target_offset - this.largeRadius, this.centerx + this.largeRadius, this.centery - this.target_offset - this.largeRadius, p);
 
 //            canvas.drawLine(this.centerx, (this.centery - this.largeRadius) - this.target_offset - 100, this.centerx, (this.centery + this.largeRadius) - this.target_offset - 100, p);
-            canvas.drawLine(this.centerx, (this.centery - this.largeRadius) - this.target_offset - 100, this.centerx, (this.centery ) - this.target_offset - 100-10, p);
-            canvas.drawLine(this.centerx, (this.centery ) - this.target_offset - 100+10, this.centerx, (this.centery + this.largeRadius) - this.target_offset - 100, p);
+            canvas.drawLine(this.centerx, (this.centery - this.largeRadius) - this.target_offset - this.largeRadius, this.centerx, (this.centery ) - this.target_offset - this.largeRadius-10, p);
+            canvas.drawLine(this.centerx, (this.centery ) - this.target_offset - this.largeRadius+10, this.centerx, (this.centery + this.largeRadius) - this.target_offset - this.largeRadius, p);
         }
     }
 
-
-    Bitmap output1;
-    int smallBmpSize = 100;
-    int smallCircleSize = 50;
-    int smallCircleRadius = 50;
-
     public Bitmap getCroppedBitmap(Bitmap bitmap, Rect src, Rect dst, float zoomScale) {
+        Bitmap output1;
+        int smallBmpSize=(int)largeRadious;
+        int smallCircleSize=(int)largeRadious/2;
+        int smallCircleRadius=(int)largeRadious/2;
         if (output1 != null && !output1.isRecycled())
             output1.recycle();
 
@@ -139,12 +137,12 @@ public class BrushView extends android.support.v7.widget.AppCompatImageView {
         paint.setColor(0xff424242);
         canvas.drawCircle(smallCircleSize, smallCircleSize, smallCircleRadius, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        dst = new Rect(0, 0, 100, 100);
+        dst = new Rect(0, 0, (int)largeRadious, (int)largeRadious);
         canvas.drawBitmap(bitmap, src, dst, paint);
 
         Matrix matrix = new Matrix();
         matrix.postScale(4, 4);
-        output = Bitmap.createBitmap(output, 0, 0, 100, 100, matrix, true);
+        output = Bitmap.createBitmap(output, 0, 0, (int)largeRadious, (int)largeRadious, matrix, true);
 
 
         int l = output.getWidth() / 4;
@@ -153,7 +151,7 @@ public class BrushView extends android.support.v7.widget.AppCompatImageView {
         int b = t + output.getHeight() / 2;
 
         Matrix matrix1 = new Matrix();
-        output1 = Bitmap.createBitmap(output, l, t, 200, 200, matrix1, true);
+        output1 = Bitmap.createBitmap(output, l, t, (int)largeRadious*2, (int)largeRadious*2, matrix1, true);
         output.recycle();
         return getCroppedBitmap(output1);
     }
